@@ -7,11 +7,11 @@ const variables = css`
     --light-navy: #2a2c45;
     --lightest-navy: #3d3f60;
     --navy-shadow: rgba(11, 12, 29, 0.7);
-    --dark-slate: #5a4b70;
-    --slate: #b2acbe;
-    --light-slate: #b8a8d6;
-    --lightest-slate: #dcd6f6;
-    --white: #f4f0fc;
+    --dark-slate: #8892b0;
+    --slate: #f8ddfe;
+    --light-slate: #f3d2fa;
+    --lightest-slate: #cb9aff;
+    --white: #f2e8ff;
     --green: #a57dff;
     --green-tint: rgba(165, 125, 255, 0.1);
     --pink: #ff7ad9;
