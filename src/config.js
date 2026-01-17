@@ -18,24 +18,12 @@ module.exports = {
       name: 'Linkedin',
       url: 'https://www.linkedin.com/in/taicoding',
     },
-    {
-      name: 'Codepen',
-      url: 'https://codepen.io/taicoding',
-    },
   ],
 
   navLinks: [
     {
       name: 'About',
       url: '/#about',
-    },
-    {
-      name: 'Experience',
-      url: '/#jobs',
-    },
-    {
-      name: 'Work',
-      url: '/#projects',
     },
     {
       name: 'Contact',
