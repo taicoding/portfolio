@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled, { ThemeProvider } from 'styled-components';
 import { Head, Loader, Nav, Social, Email, Footer } from '@components';
 import { GlobalStyle, theme } from '@styles';
+import { LocaleProvider, useLocale } from '@i18n';
 
 const StyledContent = styled.div`
   display: flex;
@@ -10,7 +11,8 @@ const StyledContent = styled.div`
   min-height: 100vh;
 `;
 
-const Layout = ({ children, location }) => {
+const LayoutContent = ({ children, location }) => {
+  const { t } = useLocale();
   const isHome = location.pathname === '/';
   const [isLoading, setIsLoading] = useState(isHome);
 
@@ -47,7 +49,7 @@ const Layout = ({ children, location }) => {
   }, [isLoading]);
 
   return (
-    <>
+    <LocaleProvider>
       <Head />
 
       <div id="root">
@@ -55,7 +57,7 @@ const Layout = ({ children, location }) => {
           <GlobalStyle />
 
           <a className="skip-to-content" href="#content">
-            Skip to Content
+            {t('skipToContent')}
           </a>
 
           {isLoading && isHome ? (
@@ -74,13 +76,21 @@ const Layout = ({ children, location }) => {
           )}
         </ThemeProvider>
       </div>
-    </>
+    </LocaleProvider>
   );
 };
 
-Layout.propTypes = {
+LayoutContent.propTypes = {
   children: PropTypes.node.isRequired,
   location: PropTypes.object.isRequired,
 };
+
+const Layout = props => (
+  <LocaleProvider>
+    <LayoutContent {...props} />
+  </LocaleProvider>
+);
+
+Layout.propTypes = LayoutContent.propTypes;
 
 export default Layout;

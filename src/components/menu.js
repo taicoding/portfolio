@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'gatsby';
 import styled from 'styled-components';
-import { navLinks } from '@config';
 import { KEY_CODES } from '@utils';
 import { useOnClickOutside } from '@hooks';
+import { useLocale } from '@i18n';
 
 const StyledMenu = styled.div`
   display: none;
@@ -157,6 +157,7 @@ const StyledSidebar = styled.aside`
 
 const Menu = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { locale, setLocale, t } = useLocale();
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
@@ -246,7 +247,7 @@ const Menu = () => {
           onClick={toggleMenu}
           menuOpen={menuOpen}
           ref={buttonRef}
-          aria-label="Menu">
+          aria-label={t('menu')}>
           <div className="ham-box">
             <div className="ham-box-inner" />
           </div>
@@ -254,21 +255,29 @@ const Menu = () => {
 
         <StyledSidebar menuOpen={menuOpen} aria-hidden={!menuOpen} tabIndex={menuOpen ? 1 : -1}>
           <nav ref={navRef}>
-            {navLinks && (
-              <ol>
-                {navLinks.map(({ url, name }, i) => (
-                  <li key={i}>
-                    <Link to={url} onClick={() => setMenuOpen(false)}>
-                      {name}
-                    </Link>
-                  </li>
-                ))}
-              </ol>
-            )}
+            <ol>
+              {[
+                { name: t('navAbout'), url: '/#about' },
+                { name: t('navContact'), url: '/#contact' },
+              ].map(({ url, name }, i) => (
+                <li key={i}>
+                  <Link to={url} onClick={() => setMenuOpen(false)}>
+                    {name}
+                  </Link>
+                </li>
+              ))}
+            </ol>
 
-            <a href="/resume.pdf" className="resume-link">
-              Resume
+            <a href={t('resumeUrl')} className="resume-link">
+              {t('resume')}
             </a>
+            <button
+              type="button"
+              className="resume-link"
+              onClick={() => setLocale(locale === 'en' ? 'es' : 'en')}
+              aria-label={t('switchLanguage')}>
+              {t('language')}
+            </button>
           </nav>
         </StyledSidebar>
       </div>

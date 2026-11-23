@@ -3,6 +3,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import styled from 'styled-components';
 import { navDelay, loaderDelay } from '@utils';
 import { usePrefersReducedMotion } from '@hooks';
+import { useLocale } from '@i18n';
 
 const StyledHeroSection = styled.section`
   ${({ theme }) => theme.mixins.flexCenter};
@@ -49,6 +50,7 @@ const StyledHeroSection = styled.section`
 const Hero = () => {
   const [isMounted, setIsMounted] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
+  const { t } = useLocale();
 
   useEffect(() => {
     if (prefersReducedMotion) {
@@ -59,24 +61,23 @@ const Hero = () => {
     return () => clearTimeout(timeout);
   }, []);
 
-  const one = <h1>Hi, my name is</h1>;
+  const one = <h1>{t('heroIntro')}</h1>;
   const two = <h2 className="big-heading">Tatiana Delgadillo.</h2>;
-  const three = <h3 className="big-heading">I turn data into impact.</h3>;
+  const three = <h3 className="big-heading">{t('heroRole')}</h3>;
   const four = (
     <>
       <p>
-        I’m a data lover focused on machine learning, data pipelines and visualization. Alongside my
-        career, I help build and strengthen Python communities in Bolivia with{' '}
+        {t('heroDescription')}{' '}
         <a href="https://pylapaz.org/" target="_blank" rel="noreferrer">
           Python La Paz
         </a>{' '}
-        creating spaces where collaboration, learning and innovation thrive.
+        {t('heroCommunity')}
       </p>
     </>
   );
   const five = (
     <a className="email-link" href="mailto:me@taicoding.com" target="_blank" rel="noreferrer">
-      Get in touch!
+      {t('getInTouch')}
     </a>
   );
 

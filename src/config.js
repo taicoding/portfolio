@@ -18,6 +18,10 @@ module.exports = {
       name: 'Linkedin',
       url: 'https://www.linkedin.com/in/taicoding',
     },
+    {
+      name: 'TikTok',
+      url: 'https://www.tiktok.com/@taicoding',
+    },
   ],
 
   navLinks: [

@@ -3,11 +3,11 @@ import { Link } from 'gatsby';
 import PropTypes from 'prop-types';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import styled, { css } from 'styled-components';
-import { navLinks } from '@config';
 import { loaderDelay } from '@utils';
 import { useScrollDirection, usePrefersReducedMotion } from '@hooks';
 import { Menu } from '@components';
 import { IconLogoText } from '@components/icons';
+import { useLocale } from '@i18n';
 
 const StyledHeader = styled.header`
   ${({ theme }) => theme.mixins.flexBetween};
@@ -134,9 +134,21 @@ const StyledLinks = styled.div`
     margin-left: 15px;
     font-size: var(--fz-xs);
   }
+
+  .language-button {
+    margin-left: 10px;
+    padding: 10px 8px;
+    border: 0;
+    background: transparent;
+    color: var(--green);
+    font-family: var(--font-mono);
+    font-size: var(--fz-xs);
+    cursor: pointer;
+  }
 `;
 
 const Nav = ({ isHome }) => {
+  const { locale, setLocale, t } = useLocale();
   const [isMounted, setIsMounted] = useState(!isHome);
   const scrollDirection = useScrollDirection('down');
   const [scrolledToTop, setScrolledToTop] = useState(true);
@@ -186,9 +198,24 @@ const Nav = ({ isHome }) => {
   );
 
   const ResumeLink = (
-    <a className="resume-button" href="/resume.pdf" target="_blank" rel="noopener noreferrer">
-      Resume
+    <a className="resume-button" href={t('resumeUrl')} target="_blank" rel="noopener noreferrer">
+      {t('resume')}
     </a>
+  );
+
+  const localizedNavLinks = [
+    { name: t('navAbout'), url: '/#about' },
+    { name: t('navContact'), url: '/#contact' },
+  ];
+
+  const LanguageButton = (
+    <button
+      className="language-button"
+      type="button"
+      onClick={() => setLocale(locale === 'en' ? 'es' : 'en')}
+      aria-label={t('switchLanguage')}>
+      {t('language')}
+    </button>
   );
 
   return (
@@ -200,14 +227,15 @@ const Nav = ({ isHome }) => {
 
             <StyledLinks>
               <ol>
-                {navLinks &&
-                  navLinks.map(({ url, name }, i) => (
+                {localizedNavLinks &&
+                  localizedNavLinks.map(({ url, name }, i) => (
                     <li key={i}>
                       <Link to={url}>{name}</Link>
                     </li>
                   ))}
               </ol>
               <div>{ResumeLink}</div>
+              {LanguageButton}
             </StyledLinks>
 
             <Menu />
@@ -226,8 +254,8 @@ const Nav = ({ isHome }) => {
               <ol>
                 <TransitionGroup component={null}>
                   {isMounted &&
-                    navLinks &&
-                    navLinks.map(({ url, name }, i) => (
+                    localizedNavLinks &&
+                    localizedNavLinks.map(({ url, name }, i) => (
                       <CSSTransition key={i} classNames={fadeDownClass} timeout={timeout}>
                         <li key={i} style={{ transitionDelay: `${isHome ? i * 100 : 0}ms` }}>
                           <Link to={url}>{name}</Link>
@@ -240,12 +268,17 @@ const Nav = ({ isHome }) => {
               <TransitionGroup component={null}>
                 {isMounted && (
                   <CSSTransition classNames={fadeDownClass} timeout={timeout}>
-                    <div style={{ transitionDelay: `${isHome ? navLinks.length * 100 : 0}ms` }}>
+                    <div
+                      style={{
+                        transitionDelay: `${isHome ? localizedNavLinks.length * 100 : 0}ms`,
+                      }}>
                       {ResumeLink}
                     </div>
                   </CSSTransition>
                 )}
               </TransitionGroup>
+
+              {isMounted && LanguageButton}
             </StyledLinks>
 
             <TransitionGroup component={null}>
