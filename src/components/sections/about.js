@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { srConfig } from '@config';
 import sr from '@utils/sr';
 import { usePrefersReducedMotion } from '@hooks';
+import { useLocale } from '@i18n';
 
 const StyledAboutSection = styled.section`
   max-width: 900px;
@@ -116,6 +117,7 @@ const StyledPic = styled.div`
 const About = () => {
   const revealContainer = useRef(null);
   const prefersReducedMotion = usePrefersReducedMotion();
+  const { t } = useLocale();
 
   useEffect(() => {
     if (prefersReducedMotion) {
@@ -129,28 +131,26 @@ const About = () => {
 
   return (
     <StyledAboutSection id="about" ref={revealContainer}>
-      <h2 className="numbered-heading">About Me</h2>
+      <h2 className="numbered-heading">{t('aboutTitle')}</h2>
 
       <div className="inner">
         <StyledText>
           <div>
-            <p>
-              Hello! My name is Tatiana and I enjoy transforming data into impact and building
-              communities that thrive. My interest in data science started over seven years ago when
-              I began applying machine learning and visualization to real-world problems across
-              industries like banking, retail, gaming and education — turns out designing scalable
-              solutions taught me a lot about how data can truly drive change!
-            </p>
+            {t('aboutParagraphs').map((segments, paragraphIndex) => (
+              <p key={paragraphIndex}>
+                {segments.map((segment, segmentIndex) =>
+                  segment.href ? (
+                    <a key={segmentIndex} href={segment.href}>
+                      {segment.text}
+                    </a>
+                  ) : (
+                    <React.Fragment key={segmentIndex}>{segment.text}</React.Fragment>
+                  ),
+                )}
+              </p>
+            ))}
 
-            <p>
-              Fast-forward to today, and I’ve had the privilege of working across diverse sectors
-              while also dedicating myself to education and community leadership. My main focus
-              these days is designing and deploying versatile data solutions, while fostering
-              collaboration and innovation through <a href="https://pylapaz.org/">Python La Paz</a>{' '}
-              and broader Python communities in Bolivia.
-            </p>
-
-            <p>Here are a few technologies I’ve been working with recently:</p>
+            <p>{t('technologies')}</p>
           </div>
 
           <ul className="skills-list">
@@ -166,7 +166,7 @@ const About = () => {
               width={500}
               quality={95}
               formats={['AUTO', 'WEBP', 'AVIF']}
-              alt="Headshot"
+              alt={t('headshotAlt')}
             />
           </div>
         </StyledPic>
